@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarDays, MapPin, SlidersHorizontal, X } from "lucide-react";
+import { ChevronUp, SlidersHorizontal, X } from "lucide-react";
 import { centers } from "@/data/centers";
 import { DayOfWeek, Sport } from "@/lib/types";
 import {
@@ -19,7 +19,6 @@ import CalendarTimeGrid, {
 import MapView from "@/components/MapView";
 
 type TimeOfDay = "any" | "morning" | "afternoon" | "evening";
-type MobileView = "calendar" | "map";
 
 function timeInRange(start: string, filter: TimeOfDay): boolean {
   if (filter === "any") return true;
@@ -45,8 +44,8 @@ export default function HomePage() {
   const [freeOnly, setFreeOnly] = useState(false);
   const [hoveredCenterId, setHoveredCenterId] = useState<string | null>(null);
   const [selectedCenterId, setSelectedCenterId] = useState<string | null>(null);
-  const [mobileView, setMobileView] = useState<MobileView>("calendar");
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [adjustOpen, setAdjustOpen] = useState(false);
+  const [mobileMapCollapsed, setMobileMapCollapsed] = useState(false);
 
   const colorByCenterId = useMemo(() => {
     const out: Record<string, string> = {};
@@ -107,187 +106,112 @@ export default function HomePage() {
     setFreeOnly(false);
   }
 
+  const highlightedId = hoveredCenterId ?? selectedCenterId;
+
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 pt-4 pb-6">
-      {/* Compact header */}
-      <div className="mb-3 sm:mb-4">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl sm:hidden" aria-hidden="true">
-            {SPORT_EMOJI[sport]}
-          </span>
-          <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-text-primary leading-tight">
-              Find play in Toronto
-            </h1>
-            <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
-              Community-centre drop-ins — when &amp; where at a glance.
-            </p>
-          </div>
-        </div>
+      {/* Quiet header */}
+      <div className="mb-4">
+        <h1 className="text-lg sm:text-xl font-semibold text-text-primary leading-tight">
+          Find play in Toronto
+        </h1>
+        <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
+          Community-centre drop-ins — when and where, at a glance.
+        </p>
       </div>
 
-      {/* Sport picker — only shown if multiple sports available */}
+      {/* Sport picker — subdued underline tabs instead of pill group */}
       {sports.length > 1 && (
-        <div className="mb-3 -mx-3 px-3 sm:mx-0 sm:px-0 overflow-x-auto">
-          <div className="inline-flex items-center gap-1 bg-gray-100 rounded-full p-1">
+        <div className="mb-3 -mx-3 px-3 sm:mx-0 sm:px-0 overflow-x-auto no-scrollbar">
+          <div className="inline-flex items-center gap-5 border-b border-border w-full">
             {sports.map((s) => (
               <button
                 key={s}
                 onClick={() => setSport(s)}
-                className={`px-3.5 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                className={`shrink-0 py-2 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px ${
                   sport === s
-                    ? "bg-white text-primary shadow-sm"
-                    : "text-text-secondary hover:text-text-primary"
+                    ? "text-text-primary border-text-primary/60"
+                    : "text-text-secondary border-transparent hover:text-text-primary"
                 }`}
               >
-                {SPORT_EMOJI[s]} {SPORT_LABELS[s]}
+                <span className="opacity-70 mr-1" aria-hidden="true">
+                  {SPORT_EMOJI[s]}
+                </span>
+                {SPORT_LABELS[s]}
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Mobile filter row (scrollable chip strip + filters button) */}
-      <div className="sm:hidden mb-3 -mx-3 px-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      {/* Summary + single Adjust control — the only filter affordance */}
+      <div className="flex items-center justify-between gap-3 mb-3">
+        <p className="text-xs sm:text-sm text-text-secondary min-w-0 truncate">
+          <span className="text-text-primary">{filteredSessions.length}</span>{" "}
+          session{filteredSessions.length !== 1 ? "s" : ""}
+          <span className="mx-1.5 opacity-50">·</span>
+          <span className="text-text-primary">{visibleCenters.length}</span>{" "}
+          location{visibleCenters.length !== 1 ? "s" : ""}
+          {freeLocations > 0 && (
+            <>
+              <span className="mx-1.5 opacity-50">·</span>
+              {freeLocations} free
+            </>
+          )}
+        </p>
         <button
-          onClick={() => setMobileFiltersOpen(true)}
-          className={`shrink-0 flex items-center gap-1.5 h-9 px-3.5 rounded-full border text-sm font-medium transition-colors ${
-            activeFilterCount > 0
-              ? "bg-primary text-white border-primary"
-              : "bg-white text-text-primary border-border"
-          }`}
+          onClick={() => setAdjustOpen(true)}
+          className="shrink-0 flex items-center gap-1.5 h-8 px-3 rounded-full border border-border bg-white text-sm text-text-secondary hover:text-text-primary hover:border-text-secondary/40 transition-colors"
         >
-          <SlidersHorizontal size={14} />
-          Filters
+          <SlidersHorizontal size={13} />
+          Adjust
           {activeFilterCount > 0 && (
-            <span className="bg-white/20 text-white text-[11px] font-semibold min-w-5 h-5 px-1 flex items-center justify-center rounded-full">
-              {activeFilterCount}
+            <span className="text-[11px] text-text-primary font-medium ml-0.5">
+              · {activeFilterCount}
             </span>
           )}
         </button>
-        {DAY_ORDER.map((d) => {
-          const isActive = dayFilter === d;
-          return (
-            <button
-              key={d}
-              onClick={() => setDayFilter(isActive ? "any" : d)}
-              className={`shrink-0 h-9 px-3.5 rounded-full border text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-primary text-white border-primary"
-                  : d === today
-                    ? "bg-primary-light text-primary border-primary-light"
-                    : "bg-white text-text-primary border-border"
-              }`}
-            >
-              {DAY_LABELS[d]}
-            </button>
-          );
-        })}
       </div>
 
-      {/* Desktop filter bar */}
-      <div className="hidden sm:flex bg-white border border-border rounded-xl p-2.5 mb-4 flex-wrap items-center gap-2">
-        <select
-          value={dayFilter}
-          onChange={(e) => setDayFilter(e.target.value as DayOfWeek | "any")}
-          className="bg-gray-50 border-0 rounded-lg px-3 py-2 text-sm font-medium focus:ring-2 focus:ring-primary focus:outline-none"
-        >
-          <option value="any">Any day</option>
-          {DAY_ORDER.map((d) => (
-            <option key={d} value={d}>
-              {DAY_FULL_LABELS[d]}
-            </option>
-          ))}
-        </select>
-
-        <div className="flex bg-gray-50 rounded-lg p-1 gap-1">
-          {(["any", "morning", "afternoon", "evening"] as TimeOfDay[]).map(
-            (t) => (
-              <button
-                key={t}
-                onClick={() => setTimeFilter(t)}
-                className={`px-3 py-1.5 text-sm font-medium rounded-md capitalize transition-colors ${
-                  timeFilter === t
-                    ? "bg-white text-primary shadow-sm"
-                    : "text-text-secondary hover:text-text-primary"
-                }`}
-              >
-                {t === "any" ? "Any time" : t}
-              </button>
-            ),
-          )}
-        </div>
-
-        <button
-          onClick={() => setFreeOnly((v) => !v)}
-          className={`h-9 px-3.5 rounded-lg text-sm font-medium border transition-colors ${
-            freeOnly
-              ? "bg-success text-white border-success"
-              : "bg-white text-text-primary border-border hover:bg-gray-50"
-          }`}
-        >
-          Free only
-        </button>
-
-        {activeFilterCount > 0 && (
+      {/* Mobile: sticky map strip above calendar — always present, collapsible */}
+      <div className="lg:hidden sticky top-0 z-30 -mx-3 px-3 bg-background/95 backdrop-blur pt-1 pb-2 mb-2 border-b border-border/50">
+        {mobileMapCollapsed ? (
           <button
-            onClick={clearFilters}
-            className="h-9 px-3 text-sm font-medium text-text-secondary hover:text-accent ml-auto"
+            onClick={() => setMobileMapCollapsed(false)}
+            className="w-full h-10 rounded-lg bg-white border border-border flex items-center justify-between px-3 text-xs text-text-secondary"
           >
-            Clear
-          </button>
-        )}
-      </div>
-
-      {/* Summary line */}
-      <p className="text-xs sm:text-sm text-text-secondary mb-3">
-        <span className="font-semibold text-text-primary">
-          {filteredSessions.length}
-        </span>{" "}
-        session{filteredSessions.length !== 1 ? "s" : ""} at{" "}
-        <span className="font-semibold text-text-primary">
-          {visibleCenters.length}
-        </span>{" "}
-        location{visibleCenters.length !== 1 ? "s" : ""}
-        {freeLocations > 0 && (
-          <>
-            {" · "}
-            <span className="text-success font-medium">
-              Free at {freeLocations}
+            <span>
+              Map · {visibleCenters.length} location
+              {visibleCenters.length !== 1 ? "s" : ""}
             </span>
-          </>
-        )}
-      </p>
-
-      {/* Mobile: segmented Calendar / Map switch */}
-      <div className="lg:hidden mb-3 flex bg-gray-100 rounded-full p-1 w-full max-w-xs">
-        {(["calendar", "map"] as MobileView[]).map((v) => {
-          const active = mobileView === v;
-          const Icon = v === "calendar" ? CalendarDays : MapPin;
-          return (
+            <ChevronUp size={14} className="rotate-180" />
+          </button>
+        ) : (
+          <div className="relative">
+            <MapView
+              centers={visibleCenters}
+              className="h-[32dvh] min-h-[200px]"
+              highlightedCenterId={highlightedId}
+              focusedCenterId={selectedCenterId}
+              colorByCenterId={colorByCenterId}
+              onHoverCenter={setHoveredCenterId}
+              onSelectCenter={setSelectedCenterId}
+              ambient
+            />
             <button
-              key={v}
-              onClick={() => setMobileView(v)}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                active
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-text-secondary hover:text-text-primary"
-              }`}
+              onClick={() => setMobileMapCollapsed(true)}
+              aria-label="Collapse map"
+              className="absolute top-2 right-2 z-[400] w-7 h-7 rounded-full bg-white/90 backdrop-blur border border-border flex items-center justify-center text-text-secondary hover:text-text-primary"
             >
-              <Icon size={14} />
-              <span className="capitalize">{v}</span>
+              <ChevronUp size={14} />
             </button>
-          );
-        })}
+          </div>
+        )}
       </div>
 
-      {/* Calendar + map */}
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(360px,460px)]">
-        <div
-          className={`min-w-0 ${
-            mobileView === "calendar" ? "block" : "hidden"
-          } lg:block`}
-        >
+      {/* Calendar + desktop map column */}
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(340px,440px)]">
+        <div className="min-w-0">
           {filteredSessions.length === 0 ? (
             <EmptyState onReset={clearFilters} />
           ) : (
@@ -302,128 +226,116 @@ export default function HomePage() {
           )}
         </div>
 
-        <div
-          className={`${
-            mobileView === "map" ? "block" : "hidden"
-          } lg:block`}
-        >
-          <div className="lg:sticky lg:top-4">
+        <div className="hidden lg:block">
+          <div className="lg:sticky lg:top-20">
             <MapView
               centers={visibleCenters}
-              className="h-[calc(100dvh-260px)] min-h-[320px] sm:h-[460px] lg:h-[620px]"
-              highlightedCenterId={hoveredCenterId ?? selectedCenterId}
+              className="h-[calc(100dvh-140px)] max-h-[640px]"
+              highlightedCenterId={highlightedId}
+              focusedCenterId={selectedCenterId}
               colorByCenterId={colorByCenterId}
               onHoverCenter={setHoveredCenterId}
               onSelectCenter={setSelectedCenterId}
+              ambient
             />
-            <p className="hidden lg:block text-xs text-text-secondary mt-2">
-              Tip — hover a block to spot it on the map, or hover a pin to see
-              that centre&apos;s sessions.
-            </p>
           </div>
         </div>
       </div>
 
-      {/* Mobile filter sheet */}
-      {mobileFiltersOpen && (
-        <div className="sm:hidden fixed inset-0 z-50">
+      {/* Adjust panel — bottom sheet on mobile, centred panel on desktop */}
+      {adjustOpen && (
+        <div className="fixed inset-0 z-50 sheet-fade-in">
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setMobileFiltersOpen(false)}
+            className="absolute inset-0 bg-black/30"
+            onClick={() => setAdjustOpen(false)}
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5 pb-[calc(env(safe-area-inset-bottom)+20px)] max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold">Filters</h2>
-              <button
-                onClick={() => setMobileFiltersOpen(false)}
-                aria-label="Close"
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100"
-              >
-                <X size={20} />
-              </button>
-            </div>
+          <div className="absolute bottom-0 left-0 right-0 sm:inset-0 sm:flex sm:items-center sm:justify-center sm:p-4 sm:pointer-events-none">
+            <div className="bg-white rounded-t-2xl sm:rounded-2xl p-5 pb-[calc(env(safe-area-inset-bottom)+20px)] sm:pb-5 max-h-[80vh] overflow-y-auto border border-border sm:w-full sm:max-w-sm sm:pointer-events-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-text-secondary">
+                  Adjust
+                </h2>
+                <button
+                  onClick={() => setAdjustOpen(false)}
+                  aria-label="Close"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-text-secondary hover:bg-gray-100"
+                >
+                  <X size={18} />
+                </button>
+              </div>
 
-            <div className="space-y-5">
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-text-secondary mb-2 block">
-                  Day
-                </label>
-                <div className="grid grid-cols-4 gap-1.5">
-                  <button
-                    onClick={() => setDayFilter("any")}
-                    className={`h-10 rounded-lg text-sm font-medium border ${
-                      dayFilter === "any"
-                        ? "bg-primary text-white border-primary"
-                        : "bg-white border-border"
-                    }`}
-                  >
-                    Any
-                  </button>
-                  {DAY_ORDER.map((d) => (
-                    <button
-                      key={d}
-                      onClick={() => setDayFilter(d)}
-                      className={`h-10 rounded-lg text-sm font-medium border ${
-                        dayFilter === d
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white border-border"
-                      }`}
+              <div className="space-y-5">
+                <div>
+                  <label className="text-[11px] font-medium uppercase tracking-wide text-text-secondary mb-2 block">
+                    Day
+                  </label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    <FilterTile
+                      active={dayFilter === "any"}
+                      onClick={() => setDayFilter("any")}
                     >
-                      {DAY_LABELS[d]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-text-secondary mb-2 block">
-                  Time of day
-                </label>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {(["any", "morning", "afternoon", "evening"] as TimeOfDay[]).map(
-                    (t) => (
-                      <button
-                        key={t}
-                        onClick={() => setTimeFilter(t)}
-                        className={`h-10 rounded-lg text-sm font-medium capitalize border ${
-                          timeFilter === t
-                            ? "bg-primary text-white border-primary"
-                            : "bg-white border-border"
-                        }`}
+                      Any
+                    </FilterTile>
+                    {DAY_ORDER.map((d) => (
+                      <FilterTile
+                        key={d}
+                        active={dayFilter === d}
+                        onClick={() => setDayFilter(d)}
+                        title={DAY_FULL_LABELS[d]}
                       >
-                        {t === "any" ? "Any" : t}
-                      </button>
-                    ),
-                  )}
+                        {DAY_LABELS[d]}
+                      </FilterTile>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <button
-                  onClick={() => setFreeOnly((v) => !v)}
-                  className={`w-full h-11 rounded-lg text-sm font-medium border transition-colors ${
-                    freeOnly
-                      ? "bg-success text-white border-success"
-                      : "bg-white border-border"
-                  }`}
-                >
-                  {freeOnly ? "✓ Free only" : "Free sessions only"}
-                </button>
-              </div>
+                <div>
+                  <label className="text-[11px] font-medium uppercase tracking-wide text-text-secondary mb-2 block">
+                    Time
+                  </label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {(
+                      ["any", "morning", "afternoon", "evening"] as TimeOfDay[]
+                    ).map((t) => (
+                      <FilterTile
+                        key={t}
+                        active={timeFilter === t}
+                        onClick={() => setTimeFilter(t)}
+                      >
+                        <span className="capitalize">{t}</span>
+                      </FilterTile>
+                    ))}
+                  </div>
+                </div>
 
-              <div className="flex gap-2 pt-1">
-                <button
-                  onClick={clearFilters}
-                  className="flex-1 h-11 rounded-lg text-sm font-medium border border-border bg-white"
-                >
-                  Clear all
-                </button>
-                <button
-                  onClick={() => setMobileFiltersOpen(false)}
-                  className="flex-1 h-11 rounded-lg text-sm font-medium bg-primary text-white"
-                >
-                  Done
-                </button>
+                <div>
+                  <label className="flex items-center gap-2.5 text-sm cursor-pointer py-1">
+                    <input
+                      type="checkbox"
+                      checked={freeOnly}
+                      onChange={(e) => setFreeOnly(e.target.checked)}
+                      className="rounded border-border text-text-primary focus:ring-text-primary/30"
+                    />
+                    <span className="text-text-primary">
+                      Free sessions only
+                    </span>
+                  </label>
+                </div>
+
+                <div className="flex gap-2 pt-1">
+                  <button
+                    onClick={clearFilters}
+                    className="flex-1 h-10 rounded-lg text-sm text-text-secondary border border-border bg-white hover:text-text-primary"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    onClick={() => setAdjustOpen(false)}
+                    className="flex-1 h-10 rounded-lg text-sm font-medium bg-text-primary text-white"
+                  >
+                    Done
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -433,23 +345,45 @@ export default function HomePage() {
   );
 }
 
+function FilterTile({
+  active,
+  onClick,
+  children,
+  title,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  title?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={title}
+      className={`h-10 rounded-lg text-sm border transition-colors ${
+        active
+          ? "bg-text-primary text-white border-text-primary"
+          : "bg-white border-border text-text-primary hover:border-text-secondary/50"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
 function EmptyState({ onReset }: { onReset: () => void }) {
   return (
-    <div className="bg-white border border-border rounded-xl p-10 text-center">
-      <div className="text-3xl mb-2" aria-hidden="true">
-        🏸
-      </div>
-      <p className="text-base font-semibold text-text-primary mb-1">
-        No sessions match
-      </p>
-      <p className="text-sm text-text-secondary mb-4">
+    <div className="bg-white border border-border rounded-2xl p-10 text-center">
+      <p className="text-sm text-text-primary mb-1">No sessions match</p>
+      <p className="text-xs text-text-secondary mb-4">
         Try widening your filters.
       </p>
       <button
         onClick={onReset}
-        className="h-10 px-4 rounded-lg bg-primary text-white text-sm font-medium"
+        className="h-9 px-4 rounded-lg bg-text-primary text-white text-sm"
       >
-        Reset filters
+        Reset
       </button>
     </div>
   );

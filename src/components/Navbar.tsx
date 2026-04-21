@@ -17,15 +17,17 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop nav */}
-      <nav className="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-border hidden md:block">
+      <nav className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b border-border hidden md:block">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl">🏸</span>
-            <span className="text-base font-bold text-primary tracking-tight">
-              Sport<span className="text-accent">To</span>
+            <span className="text-base opacity-70" aria-hidden="true">
+              🏸
+            </span>
+            <span className="text-sm font-semibold text-text-primary tracking-tight">
+              SportTo
             </span>
           </Link>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-5">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/"
@@ -35,10 +37,10 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  className={`py-1 text-sm transition-colors ${
                     isActive
-                      ? "bg-primary-light text-primary"
-                      : "text-text-secondary hover:text-text-primary hover:bg-gray-100"
+                      ? "text-text-primary border-b border-text-primary/60"
+                      : "text-text-secondary hover:text-text-primary"
                   }`}
                 >
                   {item.label}
@@ -68,13 +70,13 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={`flex-1 flex flex-col items-center justify-center gap-1 transition-colors ${
-                  isActive ? "text-primary" : "text-text-secondary"
+                  isActive ? "text-text-primary" : "text-text-secondary"
                 }`}
               >
-                <Icon size={22} strokeWidth={isActive ? 2.25 : 2} />
+                <Icon size={20} strokeWidth={1.75} />
                 <span
                   className={`text-[11px] ${
-                    isActive ? "font-semibold" : "font-medium"
+                    isActive ? "font-medium" : "font-normal"
                   }`}
                 >
                   {item.label}

@@ -145,7 +145,7 @@ export default function CalendarTimeGrid({
   const gridTemplate = `${HOUR_COL_PX}px repeat(7, minmax(${MOBILE_DAY_COL_PX}px, 1fr))`;
 
   return (
-    <div className="bg-white rounded-2xl border border-border overflow-hidden shadow-sm">
+    <div className="bg-white rounded-2xl border border-border overflow-hidden">
       <div className="overflow-x-auto no-scrollbar">
         <div>
           {/* Day header row */}
@@ -154,24 +154,25 @@ export default function CalendarTimeGrid({
             style={{ gridTemplateColumns: gridTemplate }}
           >
             <div className="sticky left-0 z-10 bg-white/90 backdrop-blur" />
-            {DAY_ORDER.map((day) => (
-              <div
-                key={day}
-                className={`text-center py-2.5 border-l border-border/60 ${
-                  day === today ? "text-primary" : "text-text-secondary"
-                }`}
-              >
-                <div className="text-[10px] font-medium uppercase tracking-wide">
-                  {DAY_LABELS[day]}
-                </div>
-                {day === today && (
-                  <div className="mt-0.5 inline-flex items-center gap-1 text-[10px] font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    Today
+            {DAY_ORDER.map((day) => {
+              const isToday = day === today;
+              return (
+                <div
+                  key={day}
+                  className="text-center py-2.5 border-l border-border/60"
+                >
+                  <div
+                    className={`inline-block text-[10px] font-medium uppercase tracking-wide ${
+                      isToday
+                        ? "text-text-primary border-b border-text-primary/50 pb-0.5"
+                        : "text-text-secondary"
+                    }`}
+                  >
+                    {DAY_LABELS[day]}
                   </div>
-                )}
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
 
           {/* Grid body */}
@@ -202,7 +203,7 @@ export default function CalendarTimeGrid({
                 <div
                   key={day}
                   className={`relative border-l border-border/60 ${
-                    day === today ? "bg-primary-light/20" : ""
+                    day === today ? "bg-gray-50/60" : ""
                   }`}
                 >
                   {/* Hour gridlines */}
@@ -233,17 +234,18 @@ export default function CalendarTimeGrid({
                           s.startTime,
                           s.endTime,
                         )}`}
-                        className={`absolute text-left rounded-lg px-2 py-1 overflow-hidden text-white transition-all duration-150 active:scale-[0.98] ${
-                          isFocus
-                            ? "ring-2 ring-offset-1 ring-accent shadow-lg z-20 scale-[1.02]"
-                            : "shadow-sm hover:shadow-md"
-                        } ${isDimmed ? "opacity-25" : "opacity-100"}`}
+                        className={`absolute text-left rounded-md px-2 py-1 overflow-hidden text-white transition-opacity duration-200 ${
+                          isFocus ? "z-20" : ""
+                        } ${isDimmed ? "opacity-30" : "opacity-100"}`}
                         style={{
                           top: s.top,
                           height: s.height,
                           left: `calc(${s.leftPct}% + 2px)`,
                           width: `calc(${s.widthPct}% - 4px)`,
                           backgroundColor: s.color,
+                          boxShadow: isFocus
+                            ? `inset 0 0 0 2px rgba(255,255,255,0.9), 0 0 0 1px ${s.color}`
+                            : undefined,
                         }}
                       >
                         <div className="text-[11px] font-semibold leading-tight truncate">

@@ -59,28 +59,59 @@ button, a {
 .leaflet-container {
   font-family: inherit !important;
   border-radius: 0.75rem;
+  background: #F3F4F6;
 }
 
 .leaflet-popup-content-wrapper {
   border-radius: 0.5rem !important;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06) !important;
+  border: 1px solid var(--color-border);
 }
 
-/* Mobile sheet entrance animation (Tailwind animate-in / slide-in classes) */
-@keyframes slide-in-from-bottom {
+.leaflet-popup-tip {
+  box-shadow: none !important;
+}
+
+.leaflet-control-attribution {
+  font-size: 10px !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: #94A3B8 !important;
+}
+
+.leaflet-bar {
+  border: 1px solid var(--color-border) !important;
+  box-shadow: none !important;
+}
+.leaflet-bar a {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #64748B !important;
+  border-bottom-color: var(--color-border) !important;
+}
+.leaflet-bar a:hover {
+  background: #F8FAFC !important;
+  color: #1A202C !important;
+}
+
+/* Ambient map mode — desaturates tiles so the map sits in the periphery.
+   Focus-within removes the filter when the user interacts with the map. */
+.map-ambient .leaflet-tile-pane {
+  filter: saturate(0.45) contrast(0.92) brightness(1.04);
+  transition: filter 300ms ease;
+}
+.map-ambient:focus-within .leaflet-tile-pane,
+.map-ambient:hover .leaflet-tile-pane {
+  filter: saturate(0.85) contrast(0.98) brightness(1.01);
+}
+
+/* Quiet mobile sheet entrance — fade only, no slide. */
+@keyframes sheet-fade-in {
   from {
-    transform: translateY(100%);
+    opacity: 0;
   }
   to {
-    transform: translateY(0);
+    opacity: 1;
   }
 }
-.animate-in {
-  animation-fill-mode: both;
-}
-.slide-in-from-bottom {
-  animation-name: slide-in-from-bottom;
-}
-.duration-200 {
-  animation-duration: 200ms;
+.sheet-fade-in {
+  animation: sheet-fade-in 180ms ease-out both;
 }

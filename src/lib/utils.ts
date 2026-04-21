@@ -80,18 +80,19 @@ export const NEIGHBORHOOD_COLORS: Record<string, string> = {
   "Moss Park": "#EF4444",
 };
 
-// Stable palette assigned by centre index. Used by both /schedule and the
-// integrated calendar so a centre has the same colour in both.
+// Low-saturation palette — enough hue variance to distinguish centres without
+// any single colour demanding attention. Shared between /schedule and the
+// integrated calendar so a centre keeps its hue across views.
 export const CENTER_COLORS = [
-  "#0D7377",
-  "#E85D4A",
-  "#8B5CF6",
-  "#F59E0B",
-  "#10B981",
-  "#EC4899",
-  "#6366F1",
-  "#0EA5E9",
-  "#F97316",
+  "#6B7FA8",
+  "#8A7CA3",
+  "#9C8871",
+  "#7A9B85",
+  "#B08070",
+  "#6E8A96",
+  "#8E7F99",
+  "#8A937A",
+  "#A08A7F",
 ];
 
 export function colorForCenter(index: number): string {
