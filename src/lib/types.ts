@@ -20,8 +20,16 @@ export type Neighborhood =
 
 export type CenterOperator = "city" | "non-profit" | "university";
 
-export interface BadmintonSession {
+export type Sport =
+  | "badminton"
+  | "pickleball"
+  | "basketball"
+  | "volleyball"
+  | "table-tennis";
+
+export interface SportSession {
   id: string;
+  sport: Sport;
   dayOfWeek: DayOfWeek;
   startTime: string; // "19:00" 24h
   endTime: string;
@@ -50,6 +58,7 @@ export interface CommunityCenter {
   numberOfCourts: number;
   racketsAvailable: boolean;
   shuttlesProvided: boolean;
-  schedules: BadmintonSession[];
+  primarySports: Sport[];
+  schedules: SportSession[];
   lastVerified: string; // ISO date
 }

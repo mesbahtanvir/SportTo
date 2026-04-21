@@ -17,11 +17,11 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop nav */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-border hidden md:block">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <nav className="sticky top-0 z-40 bg-white/85 backdrop-blur border-b border-border hidden md:block">
+        <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">🏸</span>
-            <span className="text-xl font-bold text-primary">
+            <span className="text-xl">🏸</span>
+            <span className="text-base font-bold text-primary tracking-tight">
               Sport<span className="text-accent">To</span>
             </span>
           </Link>
@@ -35,7 +35,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors ${
                     isActive
                       ? "bg-primary-light text-primary"
                       : "text-text-secondary hover:text-text-primary hover:bg-gray-100"
@@ -49,9 +49,14 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile bottom tab bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border md:hidden">
-        <div className="flex justify-around items-center h-16">
+      {/* Mobile bottom tab bar — honours iOS safe-area */}
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-border md:hidden"
+        style={{
+          paddingBottom: "env(safe-area-inset-bottom, 0px)",
+        }}
+      >
+        <div className="flex justify-around items-stretch h-16">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -62,12 +67,18 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 py-1 px-3 ${
+                className={`flex-1 flex flex-col items-center justify-center gap-1 transition-colors ${
                   isActive ? "text-primary" : "text-text-secondary"
                 }`}
               >
-                <Icon size={20} />
-                <span className="text-xs font-medium">{item.label}</span>
+                <Icon size={22} strokeWidth={isActive ? 2.25 : 2} />
+                <span
+                  className={`text-[11px] ${
+                    isActive ? "font-semibold" : "font-medium"
+                  }`}
+                >
+                  {item.label}
+                </span>
               </Link>
             );
           })}

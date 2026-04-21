@@ -43,7 +43,7 @@ export default async function CenterDetailPage({
     .slice(0, 3);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-3 sm:px-4 pt-4 sm:pt-8 pb-6">
       {/* Back link */}
       <Link
         href="/centers"
