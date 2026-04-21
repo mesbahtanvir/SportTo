@@ -73,12 +73,12 @@ export default function CentersPage() {
         </h3>
         <div className="space-y-1.5">
           {neighborhoods.map((n) => (
-            <label key={n} className="flex items-center gap-2 text-sm cursor-pointer">
+            <label key={n} className="flex items-center gap-2 text-sm cursor-pointer text-text-primary">
               <input
                 type="checkbox"
                 checked={selectedNeighborhoods.includes(n)}
                 onChange={() => toggleNeighborhood(n)}
-                className="rounded border-border text-primary focus:ring-primary"
+                className="rounded border-border text-text-primary focus:ring-text-primary/30"
               />
               {n}
             </label>
@@ -95,10 +95,10 @@ export default function CentersPage() {
             <button
               key={day}
               onClick={() => toggleDay(day)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors ${
+              className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
                 selectedDays.includes(day)
-                  ? "bg-primary text-white"
-                  : "bg-gray-100 text-text-secondary hover:bg-gray-200"
+                  ? "bg-text-primary text-white border-text-primary"
+                  : "bg-white text-text-secondary border-border hover:text-text-primary"
               }`}
             >
               {DAY_FULL_LABELS[day]}
@@ -108,12 +108,12 @@ export default function CentersPage() {
       </div>
 
       <div>
-        <label className="flex items-center gap-2 text-sm cursor-pointer">
+        <label className="flex items-center gap-2 text-sm cursor-pointer text-text-primary">
           <input
             type="checkbox"
             checked={freeOnly}
             onChange={(e) => setFreeOnly(e.target.checked)}
-            className="rounded border-border text-primary focus:ring-primary"
+            className="rounded border-border text-text-primary focus:ring-text-primary/30"
           />
           Free sessions only
         </label>
@@ -122,7 +122,7 @@ export default function CentersPage() {
       {activeFilterCount > 0 && (
         <button
           onClick={clearFilters}
-          className="text-sm text-accent hover:text-red-600 font-medium"
+          className="text-sm text-text-secondary hover:text-text-primary"
         >
           Clear all filters
         </button>
@@ -134,7 +134,7 @@ export default function CentersPage() {
     <div className="max-w-7xl mx-auto px-3 sm:px-4 pt-4 sm:pt-8 pb-6">
       <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
         <div className="min-w-0">
-          <h1 className="text-xl sm:text-3xl font-bold leading-tight">
+          <h1 className="text-lg sm:text-xl font-semibold leading-tight">
             Community centres
           </h1>
           <p className="text-xs sm:text-sm text-text-secondary mt-0.5 sm:mt-1">
@@ -144,13 +144,13 @@ export default function CentersPage() {
         </div>
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="md:hidden shrink-0 flex items-center gap-1.5 h-9 px-3.5 bg-white border border-border rounded-full text-sm font-medium"
+          className="md:hidden shrink-0 flex items-center gap-1.5 h-8 px-3 bg-white border border-border rounded-full text-sm text-text-secondary hover:text-text-primary"
         >
-          <Filter size={14} />
+          <Filter size={13} />
           Filters
           {activeFilterCount > 0 && (
-            <span className="bg-primary text-white text-[11px] font-semibold w-5 h-5 flex items-center justify-center rounded-full">
-              {activeFilterCount}
+            <span className="text-[11px] text-text-primary font-medium">
+              · {activeFilterCount}
             </span>
           )}
         </button>
@@ -162,20 +162,22 @@ export default function CentersPage() {
 
         {/* Mobile filter sheet */}
         {showFilters && (
-          <div className="fixed inset-0 z-50 md:hidden">
+          <div className="fixed inset-0 z-50 md:hidden sheet-fade-in">
             <div
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/30"
               onClick={() => setShowFilters(false)}
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5 pb-[calc(env(safe-area-inset-bottom)+20px)] max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom duration-200">
+            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5 pb-[calc(env(safe-area-inset-bottom)+20px)] max-h-[80vh] overflow-y-auto border border-border">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold">Filters</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-text-secondary">
+                  Filters
+                </h2>
                 <button
                   onClick={() => setShowFilters(false)}
                   aria-label="Close"
-                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100"
+                  className="w-8 h-8 flex items-center justify-center rounded-full text-text-secondary hover:bg-gray-100"
                 >
-                  <X size={20} />
+                  <X size={18} />
                 </button>
               </div>
               {filterPanel}
