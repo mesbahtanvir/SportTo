@@ -11,6 +11,10 @@ export default function CenterDetailMap({
   allCenters: CommunityCenter[];
 }) {
   return (
-    <MapView centers={allCenters} height="250px" selectedSlug={center.slug} />
+    <MapView
+      centers={allCenters}
+      className="h-[220px] sm:h-[260px]"
+      selectedSlug={center.slug}
+    />
   );
 }

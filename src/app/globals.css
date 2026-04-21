@@ -17,9 +17,42 @@
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+:root {
+  /* Height of the bottom nav on mobile; becomes 0 from md-up. */
+  --mobile-nav-h: 64px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --mobile-nav-h: 0px;
+  }
+}
+
 body {
   background: var(--color-background);
   color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: contain;
+}
+
+/* Hide scrollbars on horizontal pill strips while keeping them scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safer tap targets — disable the grey flash on iOS without breaking a11y */
+button, a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Leaflet overrides */
@@ -31,4 +64,23 @@ body {
 .leaflet-popup-content-wrapper {
   border-radius: 0.5rem !important;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+}
+
+/* Mobile sheet entrance animation (Tailwind animate-in / slide-in classes) */
+@keyframes slide-in-from-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-in {
+  animation-fill-mode: both;
+}
+.slide-in-from-bottom {
+  animation-name: slide-in-from-bottom;
+}
+.duration-200 {
+  animation-duration: 200ms;
 }

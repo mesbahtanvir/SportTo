@@ -6,7 +6,10 @@ import { NEIGHBORHOOD_COLORS } from "@/lib/utils";
 
 interface MapViewProps {
   centers: CommunityCenter[];
+  /** Inline pixel height. Ignored when `className` is provided. */
   height?: string;
+  /** Tailwind class controlling the wrapper size (use for responsive height). */
+  className?: string;
   selectedSlug?: string;
   /** Centre id to highlight / pan to (from shared calendar+map state). */
   highlightedCenterId?: string | null;
@@ -19,6 +22,7 @@ interface MapViewProps {
 export default function MapView({
   centers,
   height = "400px",
+  className,
   selectedSlug,
   highlightedCenterId,
   colorByCenterId,
@@ -60,13 +64,16 @@ export default function MapView({
     );
   }, []);
 
+  const wrapperStyle = className ? undefined : { height };
+  const wrapperClass = className ?? "";
+
   if (!leaflet) {
     return (
       <div
-        className="bg-gray-100 rounded-xl flex items-center justify-center text-text-secondary"
-        style={{ height }}
+        className={`bg-gray-100 rounded-xl flex items-center justify-center text-text-secondary ${wrapperClass}`}
+        style={wrapperStyle}
       >
-        Loading map...
+        <span className="text-sm">Loading map…</span>
       </div>
     );
   }
@@ -116,7 +123,7 @@ export default function MapView({
     : null;
 
   return (
-    <>
+    <div className={wrapperClass} style={wrapperStyle}>
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
@@ -124,7 +131,7 @@ export default function MapView({
       <MapContainer
         center={initialCenter}
         zoom={selectedSlug ? 15 : 13}
-        style={{ height, width: "100%", borderRadius: "0.75rem" }}
+        style={{ height: "100%", width: "100%", borderRadius: "0.75rem" }}
         scrollWheelZoom={false}
       >
         <TileLayer
@@ -183,6 +190,6 @@ export default function MapView({
           );
         })}
       </MapContainer>
-    </>
+    </div>
   );
 }

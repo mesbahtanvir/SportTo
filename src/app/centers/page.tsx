@@ -131,23 +131,25 @@ export default function CentersPage() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-bold">Community Centres</h1>
-          <p className="text-text-secondary mt-1">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 pt-4 sm:pt-8 pb-6">
+      <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-3xl font-bold leading-tight">
+            Community centres
+          </h1>
+          <p className="text-xs sm:text-sm text-text-secondary mt-0.5 sm:mt-1">
             {filtered.length} location{filtered.length !== 1 ? "s" : ""} with
             badminton
           </p>
         </div>
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="md:hidden flex items-center gap-2 px-4 py-2 bg-white border border-border rounded-lg text-sm font-medium"
+          className="md:hidden shrink-0 flex items-center gap-1.5 h-9 px-3.5 bg-white border border-border rounded-full text-sm font-medium"
         >
-          <Filter size={16} />
+          <Filter size={14} />
           Filters
           {activeFilterCount > 0 && (
-            <span className="bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+            <span className="bg-primary text-white text-[11px] font-semibold w-5 h-5 flex items-center justify-center rounded-full">
               {activeFilterCount}
             </span>
           )}
@@ -162,13 +164,17 @@ export default function CentersPage() {
         {showFilters && (
           <div className="fixed inset-0 z-50 md:hidden">
             <div
-              className="absolute inset-0 bg-black/40"
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               onClick={() => setShowFilters(false)}
             />
-            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-6 max-h-[70vh] overflow-y-auto">
+            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl p-5 pb-[calc(env(safe-area-inset-bottom)+20px)] max-h-[80vh] overflow-y-auto animate-in slide-in-from-bottom duration-200">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold">Filters</h2>
-                <button onClick={() => setShowFilters(false)}>
+                <button
+                  onClick={() => setShowFilters(false)}
+                  aria-label="Close"
+                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100"
+                >
                   <X size={20} />
                 </button>
               </div>
@@ -178,8 +184,8 @@ export default function CentersPage() {
         )}
 
         {/* Main content */}
-        <div className="flex-1 space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="flex-1 min-w-0 space-y-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             {filtered.map((center) => (
               <CenterCard key={center.id} center={center} />
             ))}
@@ -190,7 +196,10 @@ export default function CentersPage() {
               <p className="text-sm">Try adjusting your filters.</p>
             </div>
           )}
-          <MapView centers={filtered} />
+          <MapView
+            centers={filtered}
+            className="h-[320px] sm:h-[420px] lg:h-[480px]"
+          />
         </div>
       </div>
     </div>

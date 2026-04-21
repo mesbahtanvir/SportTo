@@ -56,10 +56,12 @@ export default function SchedulePage() {
   }, [allSessions]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Weekly agenda</h1>
-        <p className="text-text-secondary mt-1">
+    <div className="max-w-3xl mx-auto px-3 sm:px-4 pt-4 sm:pt-8 pb-6">
+      <div className="mb-5 sm:mb-6">
+        <h1 className="text-xl sm:text-3xl font-bold leading-tight">
+          Weekly agenda
+        </h1>
+        <p className="text-xs sm:text-sm text-text-secondary mt-0.5 sm:mt-1">
           All sessions across {centers.length} centres — scannable list. For a
           time-grid view with the map,{" "}
           <Link href="/" className="text-primary underline">
@@ -73,7 +75,7 @@ export default function SchedulePage() {
         {byDay.map(({ day, sessions }) => (
           <div key={day}>
             <h2
-              className={`text-lg font-bold mb-3 ${
+              className={`text-base sm:text-lg font-bold mb-2 sm:mb-3 sticky top-14 md:top-16 bg-background/85 backdrop-blur py-1 z-10 ${
                 day === today ? "text-primary" : ""
               }`}
             >

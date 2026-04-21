@@ -37,10 +37,13 @@ interface Props {
   onSelectCenter: (id: string | null) => void;
 }
 
-// Each minute of the day gets this many pixels of vertical space.
 const PX_PER_MIN = 0.9;
 const DAY_HEIGHT_PX = GRID_TOTAL_MINUTES * PX_PER_MIN;
 const GRID_START_MIN = GRID_START_HOUR * 60;
+
+// Mobile day column = 82px, desktop = 1fr. Hour label column sticks left.
+const HOUR_COL_PX = 44;
+const MOBILE_DAY_COL_PX = 82;
 
 interface PlacedSession extends CalendarSession {
   top: number;
@@ -49,15 +52,11 @@ interface PlacedSession extends CalendarSession {
   widthPct: number;
 }
 
-// Lay out overlapping sessions inside one day column using a simple
-// left-to-right sweep. Sessions sharing vertical space are split into equal
-// columns within the day.
 function layoutDay(sessions: CalendarSession[]): PlacedSession[] {
   const sorted = [...sessions].sort(
     (a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime),
   );
 
-  // Group into clusters of overlapping sessions.
   const clusters: CalendarSession[][] = [];
   let current: CalendarSession[] = [];
   let currentEnd = -Infinity;
@@ -77,8 +76,6 @@ function layoutDay(sessions: CalendarSession[]): PlacedSession[] {
 
   const placed: PlacedSession[] = [];
   for (const cluster of clusters) {
-    // Assign each cluster-member to a column; reuse column when its last
-    // session has already ended.
     const cols: CalendarSession[][] = [];
     const colIndex = new Map<string, number>();
     for (const s of cluster) {
@@ -106,7 +103,7 @@ function layoutDay(sessions: CalendarSession[]): PlacedSession[] {
       placed.push({
         ...s,
         top: (start - GRID_START_MIN) * PX_PER_MIN,
-        height: Math.max(18, (end - start) * PX_PER_MIN - 2),
+        height: Math.max(22, (end - start) * PX_PER_MIN - 2),
         leftPct: (col / totalCols) * 100,
         widthPct: 100 / totalCols,
       });
@@ -143,26 +140,35 @@ export default function CalendarTimeGrid({
 
   const focusId = hoveredCenterId ?? selectedCenterId;
 
+  // CSS grid template: sticky hour column then 7 day columns. Day columns have
+  // a mobile-friendly fixed min width; the parent enables horizontal scroll.
+  const gridTemplate = `${HOUR_COL_PX}px repeat(7, minmax(${MOBILE_DAY_COL_PX}px, 1fr))`;
+
   return (
-    <div className="bg-white rounded-xl border border-border overflow-hidden">
-      <div className="overflow-x-auto">
-        <div className="min-w-[760px]">
+    <div className="bg-white rounded-2xl border border-border overflow-hidden shadow-sm">
+      <div className="overflow-x-auto no-scrollbar">
+        <div>
           {/* Day header row */}
           <div
-            className="grid sticky top-0 z-10 bg-white border-b border-border"
-            style={{ gridTemplateColumns: "56px repeat(7, 1fr)" }}
+            className="grid sticky top-0 z-20 bg-white/90 backdrop-blur border-b border-border"
+            style={{ gridTemplateColumns: gridTemplate }}
           >
-            <div />
+            <div className="sticky left-0 z-10 bg-white/90 backdrop-blur" />
             {DAY_ORDER.map((day) => (
               <div
                 key={day}
-                className={`text-center text-xs font-semibold py-2 ${
+                className={`text-center py-2.5 border-l border-border/60 ${
                   day === today ? "text-primary" : "text-text-secondary"
                 }`}
               >
-                {DAY_LABELS[day]}
+                <div className="text-[10px] font-medium uppercase tracking-wide">
+                  {DAY_LABELS[day]}
+                </div>
                 {day === today && (
-                  <span className="ml-1 inline-block w-1.5 h-1.5 rounded-full bg-primary align-middle" />
+                  <div className="mt-0.5 inline-flex items-center gap-1 text-[10px] font-semibold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                    Today
+                  </div>
                 )}
               </div>
             ))}
@@ -172,12 +178,12 @@ export default function CalendarTimeGrid({
           <div
             className="relative grid"
             style={{
-              gridTemplateColumns: "56px repeat(7, 1fr)",
+              gridTemplateColumns: gridTemplate,
               height: DAY_HEIGHT_PX,
             }}
           >
-            {/* Hour-label column */}
-            <div className="relative border-r border-border">
+            {/* Sticky hour-label column */}
+            <div className="sticky left-0 z-10 bg-white/90 backdrop-blur border-r border-border">
               {hours.map((h, i) => (
                 <div
                   key={h}
@@ -195,8 +201,8 @@ export default function CalendarTimeGrid({
               return (
                 <div
                   key={day}
-                  className={`relative border-r border-border last:border-r-0 ${
-                    day === today ? "bg-primary-light/30" : ""
+                  className={`relative border-l border-border/60 ${
+                    day === today ? "bg-primary-light/20" : ""
                   }`}
                 >
                   {/* Hour gridlines */}
@@ -227,11 +233,11 @@ export default function CalendarTimeGrid({
                           s.startTime,
                           s.endTime,
                         )}`}
-                        className={`absolute text-left rounded-md px-1.5 py-1 overflow-hidden text-white transition-all ${
+                        className={`absolute text-left rounded-lg px-2 py-1 overflow-hidden text-white transition-all duration-150 active:scale-[0.98] ${
                           isFocus
-                            ? "ring-2 ring-offset-1 ring-accent shadow-md z-20"
-                            : ""
-                        } ${isDimmed ? "opacity-30" : "opacity-100"}`}
+                            ? "ring-2 ring-offset-1 ring-accent shadow-lg z-20 scale-[1.02]"
+                            : "shadow-sm hover:shadow-md"
+                        } ${isDimmed ? "opacity-25" : "opacity-100"}`}
                         style={{
                           top: s.top,
                           height: s.height,
@@ -240,14 +246,16 @@ export default function CalendarTimeGrid({
                           backgroundColor: s.color,
                         }}
                       >
-                        <div className="text-[10px] font-semibold leading-tight truncate">
+                        <div className="text-[11px] font-semibold leading-tight truncate">
                           {SPORT_EMOJI[s.sport]} {s.centerShortName}
                         </div>
-                        <div className="text-[9px] opacity-90 truncate">
-                          {formatTimeRange(s.startTime, s.endTime)}
-                        </div>
-                        {s.height > 40 && (
-                          <div className="text-[9px] opacity-80 truncate">
+                        {s.height > 32 && (
+                          <div className="text-[10px] opacity-90 leading-tight truncate">
+                            {formatTimeRange(s.startTime, s.endTime)}
+                          </div>
+                        )}
+                        {s.height > 56 && (
+                          <div className="text-[10px] opacity-80 leading-tight truncate">
                             {s.cost === 0 ? "Free" : `$${s.cost}`}
                           </div>
                         )}
