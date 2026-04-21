@@ -18,9 +18,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: false,
     shuttlesProvided: false,
     lastVerified: "2026-03-15",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "us-mon",
+        sport: "badminton",
         dayOfWeek: "monday",
         startTime: "19:00",
         endTime: "21:00",
@@ -33,6 +35,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "us-wed",
+        sport: "badminton",
         dayOfWeek: "wednesday",
         startTime: "19:00",
         endTime: "21:00",
@@ -45,6 +48,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "us-fri",
+        sport: "badminton",
         dayOfWeek: "friday",
         startTime: "18:00",
         endTime: "20:00",
@@ -57,6 +61,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "us-sat",
+        sport: "badminton",
         dayOfWeek: "saturday",
         startTime: "08:45",
         endTime: "13:45",
@@ -86,9 +91,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: false,
     shuttlesProvided: false,
     lastVerified: "2026-03-10",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "cc-tue",
+        sport: "badminton",
         dayOfWeek: "tuesday",
         startTime: "18:30",
         endTime: "21:00",
@@ -101,6 +108,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "cc-thu",
+        sport: "badminton",
         dayOfWeek: "thursday",
         startTime: "18:30",
         endTime: "21:00",
@@ -113,6 +121,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "cc-sun",
+        sport: "badminton",
         dayOfWeek: "sunday",
         startTime: "10:00",
         endTime: "13:00",
@@ -142,9 +151,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: true,
     shuttlesProvided: true,
     lastVerified: "2026-03-12",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "sc-mon",
+        sport: "badminton",
         dayOfWeek: "monday",
         startTime: "10:00",
         endTime: "12:00",
@@ -157,6 +168,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "sc-wed",
+        sport: "badminton",
         dayOfWeek: "wednesday",
         startTime: "10:00",
         endTime: "12:00",
@@ -169,6 +181,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "sc-fri2",
+        sport: "badminton",
         dayOfWeek: "friday",
         startTime: "19:00",
         endTime: "21:00",
@@ -198,9 +211,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: true,
     shuttlesProvided: true,
     lastVerified: "2026-03-14",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "rp-mon",
+        sport: "badminton",
         dayOfWeek: "monday",
         startTime: "18:00",
         endTime: "21:00",
@@ -213,6 +228,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "rp-wed",
+        sport: "badminton",
         dayOfWeek: "wednesday",
         startTime: "18:00",
         endTime: "21:00",
@@ -225,6 +241,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "rp-sat",
+        sport: "badminton",
         dayOfWeek: "saturday",
         startTime: "13:00",
         endTime: "16:00",
@@ -237,6 +254,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "rp-sun",
+        sport: "badminton",
         dayOfWeek: "sunday",
         startTime: "10:00",
         endTime: "13:00",
@@ -266,9 +284,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: false,
     shuttlesProvided: false,
     lastVerified: "2026-03-08",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "hf-tue",
+        sport: "badminton",
         dayOfWeek: "tuesday",
         startTime: "19:00",
         endTime: "21:00",
@@ -281,6 +301,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "hf-sat",
+        sport: "badminton",
         dayOfWeek: "saturday",
         startTime: "10:00",
         endTime: "12:00",
@@ -310,9 +331,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: false,
     shuttlesProvided: false,
     lastVerified: "2026-03-10",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "js-mon",
+        sport: "badminton",
         dayOfWeek: "monday",
         startTime: "19:00",
         endTime: "21:00",
@@ -325,6 +348,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "js-thu",
+        sport: "badminton",
         dayOfWeek: "thursday",
         startTime: "19:00",
         endTime: "21:00",
@@ -354,9 +378,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: true,
     shuttlesProvided: false,
     lastVerified: "2026-03-14",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "ji-mon",
+        sport: "badminton",
         dayOfWeek: "monday",
         startTime: "18:30",
         endTime: "21:00",
@@ -369,6 +395,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "ji-wed",
+        sport: "badminton",
         dayOfWeek: "wednesday",
         startTime: "18:30",
         endTime: "21:00",
@@ -381,6 +408,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "ji-fri",
+        sport: "badminton",
         dayOfWeek: "friday",
         startTime: "18:30",
         endTime: "21:00",
@@ -393,6 +421,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "ji-sat",
+        sport: "badminton",
         dayOfWeek: "saturday",
         startTime: "09:00",
         endTime: "12:00",
@@ -422,9 +451,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: true,
     shuttlesProvided: false,
     lastVerified: "2026-03-15",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "ut-tue",
+        sport: "badminton",
         dayOfWeek: "tuesday",
         startTime: "20:00",
         endTime: "22:00",
@@ -438,6 +469,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "ut-thu",
+        sport: "badminton",
         dayOfWeek: "thursday",
         startTime: "20:00",
         endTime: "22:00",
@@ -451,6 +483,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "ut-sun",
+        sport: "badminton",
         dayOfWeek: "sunday",
         startTime: "14:00",
         endTime: "17:00",
@@ -481,9 +514,11 @@ export const centers: CommunityCenter[] = [
     racketsAvailable: true,
     shuttlesProvided: true,
     lastVerified: "2026-03-12",
+    primarySports: ["badminton"],
     schedules: [
       {
         id: "tmu-mon",
+        sport: "badminton",
         dayOfWeek: "monday",
         startTime: "12:00",
         endTime: "14:00",
@@ -497,6 +532,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "tmu-wed",
+        sport: "badminton",
         dayOfWeek: "wednesday",
         startTime: "12:00",
         endTime: "14:00",
@@ -510,6 +546,7 @@ export const centers: CommunityCenter[] = [
       },
       {
         id: "tmu-fri",
+        sport: "badminton",
         dayOfWeek: "friday",
         startTime: "17:00",
         endTime: "20:00",
