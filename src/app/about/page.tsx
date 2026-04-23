@@ -55,6 +55,32 @@ export default function AboutPage() {
           </ul>
         </div>
 
+        <div className="bg-white rounded-xl border border-border p-6">
+          <h2 className="text-xl font-semibold mb-3">Community Achievements</h2>
+          <p className="text-text-secondary leading-relaxed mb-4 text-sm">
+            Shout-outs to players who&apos;ve gone the extra mile.
+          </p>
+          <ul className="space-y-3">
+            <li className="flex items-start gap-3">
+              <span
+                aria-hidden="true"
+                className="shrink-0 w-8 h-8 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-base"
+              >
+                🏆
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-text-primary">
+                  Yu Lee Cun
+                </p>
+                <p className="text-xs text-text-secondary leading-relaxed">
+                  Played drop-in badminton at every community centre listed in
+                  SportTo.
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
           <h2 className="text-xl font-semibold mb-3 text-amber-800">
             Important Disclaimer
