@@ -29,36 +29,43 @@ export default function CenterCard({ center }: { center: CommunityCenter }) {
         <NeighborhoodBadge neighborhood={center.neighborhood} />
 
         <div className="mt-3 flex items-center gap-1.5 text-sm text-text-secondary">
-          <MapPin size={14} />
+          <MapPin size={13} strokeWidth={1.75} />
           <span>{center.address}</span>
         </div>
 
         {nextSession && (
           <div className="mt-1.5 flex items-center gap-1.5 text-sm text-text-secondary">
-            <Clock size={14} />
+            <Clock size={13} strokeWidth={1.75} />
             <span>{formatTimeRange(nextSession.startTime, nextSession.endTime)}</span>
           </div>
         )}
 
-        {/* Day dots */}
-        <div className="mt-3 flex gap-1">
-          {DAY_ORDER.map((day) => (
-            <span
-              key={day}
-              className={`w-7 h-6 flex items-center justify-center text-[10px] font-medium rounded ${
-                scheduledDays.has(day)
-                  ? "bg-text-primary/85 text-white"
-                  : "bg-gray-50 text-gray-300"
-              }`}
-            >
-              {DAY_LABELS[day]}
-            </span>
-          ))}
+        {/* Day rhythm — quiet dots, scheduled days inked, others hushed */}
+        <div className="mt-4 flex gap-1">
+          {DAY_ORDER.map((day) => {
+            const on = scheduledDays.has(day);
+            return (
+              <span
+                key={day}
+                title={DAY_LABELS[day]}
+                className={`flex-1 h-1 rounded-full ${
+                  on ? "bg-text-primary/50" : "bg-border"
+                }`}
+                aria-label={`${DAY_LABELS[day]}: ${on ? "scheduled" : "none"}`}
+              />
+            );
+          })}
         </div>
 
-        <div className="mt-3 flex items-center gap-3 text-xs text-text-secondary">
+        <div className="mt-3 flex items-center gap-2.5 text-xs text-text-secondary">
           <span>{center.numberOfCourts} court{center.numberOfCourts > 1 ? "s" : ""}</span>
-          {center.racketsAvailable && <span>Rackets available</span>}
+          {center.racketsAvailable && (
+            <>
+              <span className="opacity-40">·</span>
+              <span>Rackets available</span>
+            </>
+          )}
+          <span className="opacity-40">·</span>
           <span className="capitalize">{center.operator}</span>
         </div>
       </div>

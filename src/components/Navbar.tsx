@@ -20,10 +20,11 @@ export default function Navbar() {
       <nav className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b border-border hidden md:block">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-base opacity-70" aria-hidden="true">
-              🏸
-            </span>
-            <span className="text-sm font-semibold text-text-primary tracking-tight">
+            <span
+              aria-hidden="true"
+              className="w-1.5 h-1.5 rounded-full bg-text-primary/60"
+            />
+            <span className="text-sm font-medium text-text-primary tracking-tight">
               SportTo
             </span>
           </Link>

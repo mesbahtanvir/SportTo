@@ -2,26 +2,34 @@ import { ExternalLink } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-6">About SportTo</h1>
+    <div className="max-w-2xl mx-auto px-4 pt-8 pb-16">
+      <header className="mb-10">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight">
+          About SportTo
+        </h1>
+        <p className="text-sm text-text-secondary mt-2 leading-relaxed">
+          A quiet guide to drop-in sports at community centres across
+          downtown Toronto.
+        </p>
+      </header>
 
-      <div className="prose prose-slate max-w-none space-y-6">
-        <div className="bg-white rounded-xl border border-border p-6">
-          <h2 className="text-xl font-semibold mb-3">What is SportTo?</h2>
-          <p className="text-text-secondary leading-relaxed">
-            SportTo is a community-built guide to finding badminton drop-in
-            sessions at community centres across downtown Toronto. We aggregate
-            schedule information from multiple sources to make it easy to find a
-            court near you.
+      <div className="space-y-10 text-[15px] leading-relaxed text-text-primary">
+        <section>
+          <h2 className="text-[11px] font-medium uppercase tracking-wider text-text-secondary mb-3">
+            What this is
+          </h2>
+          <p className="text-text-primary/90">
+            SportTo aggregates schedule information from multiple sources so
+            you can see, at a glance, when and where to play — without wading
+            through a dozen separate municipal and university pages.
           </p>
-        </div>
+        </section>
 
-        <div className="bg-white rounded-xl border border-border p-6">
-          <h2 className="text-xl font-semibold mb-3">Data Sources</h2>
-          <p className="text-text-secondary leading-relaxed mb-4">
-            Schedule data is manually curated from the following sources:
-          </p>
-          <ul className="space-y-2">
+        <section>
+          <h2 className="text-[11px] font-medium uppercase tracking-wider text-text-secondary mb-3">
+            Data sources
+          </h2>
+          <ul className="space-y-1.5 text-sm">
             {[
               {
                 name: "City of Toronto Drop-in Sports Map",
@@ -45,53 +53,63 @@ export default function AboutPage() {
                   href={source.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-primary hover:text-primary-dark font-medium text-sm"
+                  className="inline-flex items-center gap-1.5 text-text-primary underline decoration-text-secondary/40 underline-offset-4 hover:decoration-text-primary/60"
                 >
                   {source.name}
-                  <ExternalLink size={14} />
+                  <ExternalLink size={12} className="opacity-60" />
                 </a>
               </li>
             ))}
           </ul>
-        </div>
+        </section>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
-          <h2 className="text-xl font-semibold mb-3 text-amber-800">
-            Important Disclaimer
-          </h2>
-          <p className="text-amber-700 leading-relaxed">
-            Schedules are manually curated and may not reflect the latest
-            changes. Programs may be cancelled due to holidays, special events,
-            or maintenance. Always verify schedules directly with the community
-            centre before visiting. Call 311 for City of Toronto recreation
+        <section className="border-l-2 border-border pl-4 text-sm text-text-secondary leading-relaxed">
+          <p className="text-text-primary mb-1 text-[13px] font-medium">
+            A small caveat
+          </p>
+          <p>
+            Schedules are hand-curated and can drift. Programs get cancelled
+            for holidays, events, or maintenance. Confirm with the centre
+            before you go — call 311 for City of Toronto recreation
             information.
           </p>
-        </div>
+        </section>
 
-        <div className="bg-white rounded-xl border border-border p-6">
-          <h2 className="text-xl font-semibold mb-3">Tips for Drop-in Badminton</h2>
-          <ul className="text-text-secondary space-y-2 text-sm leading-relaxed">
-            <li>
-              <strong>Reserve a Spot:</strong> Many City of Toronto centres use
-              the &quot;Reserve a Spot&quot; system. New spots are released
-              Thursdays at 8 AM for the following week (Monday to Sunday).
-            </li>
-            <li>
-              <strong>What to bring:</strong> Bring your own racket and
-              shuttlecocks (some centres provide them), non-marking indoor shoes
-              (required), and a water bottle.
-            </li>
-            <li>
-              <strong>Costs:</strong> City of Toronto drop-in sessions typically
-              cost $4/session. Some centres and programs are free. University
-              facilities require membership.
-            </li>
-            <li>
-              <strong>Arrive early:</strong> Popular sessions fill up fast.
-              Arrive 10-15 minutes early for walk-in sessions.
-            </li>
-          </ul>
-        </div>
+        <section>
+          <h2 className="text-[11px] font-medium uppercase tracking-wider text-text-secondary mb-3">
+            Tips for drop-in badminton
+          </h2>
+          <dl className="space-y-3 text-sm">
+            <div>
+              <dt className="text-text-primary">Reserve a spot</dt>
+              <dd className="text-text-secondary mt-0.5">
+                Many City of Toronto centres use the Reserve-a-Spot system.
+                New slots open Thursdays at 8 AM for the following week.
+              </dd>
+            </div>
+            <div>
+              <dt className="text-text-primary">What to bring</dt>
+              <dd className="text-text-secondary mt-0.5">
+                Your own racket and shuttlecocks (some centres provide them),
+                non-marking indoor shoes, water.
+              </dd>
+            </div>
+            <div>
+              <dt className="text-text-primary">Costs</dt>
+              <dd className="text-text-secondary mt-0.5">
+                City drop-ins typically run around $4. Some centres are free.
+                University facilities require membership.
+              </dd>
+            </div>
+            <div>
+              <dt className="text-text-primary">Arrive early</dt>
+              <dd className="text-text-secondary mt-0.5">
+                Popular sessions fill fast. 10–15 minutes before start for
+                walk-in sessions.
+              </dd>
+            </div>
+          </dl>
+        </section>
       </div>
     </div>
   );
