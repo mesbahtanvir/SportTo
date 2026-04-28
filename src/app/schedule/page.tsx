@@ -56,19 +56,9 @@ export default function SchedulePage() {
 
   return (
     <div className="max-w-3xl mx-auto px-3 sm:px-4 pt-4 sm:pt-8 pb-6">
-      <div className="mb-5 sm:mb-6">
-        <h1 className="text-lg sm:text-xl font-semibold leading-tight">
-          Weekly agenda
-        </h1>
-        <p className="text-xs sm:text-sm text-text-secondary mt-0.5 sm:mt-1">
-          All sessions across {centers.length} centres. For the time-grid view
-          with the map,{" "}
-          <Link href="/" className="text-text-primary underline decoration-text-secondary/40 underline-offset-2">
-            try the home page
-          </Link>
-          .
-        </p>
-      </div>
+      <h1 className="text-lg sm:text-xl font-semibold leading-tight mb-5 sm:mb-6">
+        Weekly agenda
+      </h1>
 
       <div className="space-y-6">
         {byDay.map(({ day, sessions }) => (
@@ -90,7 +80,7 @@ export default function SchedulePage() {
               )}
             </h2>
             {sessions.length === 0 ? (
-              <p className="text-sm text-gray-400 italic pl-4">
+              <p className="text-sm text-text-secondary/70 pl-4">
                 No sessions scheduled
               </p>
             ) : (

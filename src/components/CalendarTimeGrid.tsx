@@ -203,14 +203,14 @@ export default function CalendarTimeGrid({
                 <div
                   key={day}
                   className={`relative border-l border-border/60 ${
-                    day === today ? "bg-gray-50/60" : ""
+                    day === today ? "bg-primary-light/40" : ""
                   }`}
                 >
                   {/* Hour gridlines */}
                   {hours.map((h, i) => (
                     <div
                       key={h}
-                      className="absolute left-0 right-0 border-t border-dashed border-gray-100"
+                      className="absolute left-0 right-0 border-t border-dashed border-border-soft"
                       style={{ top: i * 60 * PX_PER_MIN }}
                     />
                   ))}
@@ -234,9 +234,9 @@ export default function CalendarTimeGrid({
                           s.startTime,
                           s.endTime,
                         )}`}
-                        className={`absolute text-left rounded-md px-2 py-1 overflow-hidden text-white transition-opacity duration-200 ${
+                        className={`absolute text-left rounded-md px-2 py-1 overflow-hidden text-white transition-[opacity,transform] duration-200 ${
                           isFocus ? "z-20" : ""
-                        } ${isDimmed ? "opacity-30" : "opacity-100"}`}
+                        } ${isDimmed ? "opacity-25" : "opacity-95"}`}
                         style={{
                           top: s.top,
                           height: s.height,
@@ -244,20 +244,23 @@ export default function CalendarTimeGrid({
                           width: `calc(${s.widthPct}% - 4px)`,
                           backgroundColor: s.color,
                           boxShadow: isFocus
-                            ? `inset 0 0 0 2px rgba(255,255,255,0.9), 0 0 0 1px ${s.color}`
+                            ? `inset 0 0 0 1.5px rgba(255,255,255,0.75)`
                             : undefined,
                         }}
                       >
-                        <div className="text-[11px] font-semibold leading-tight truncate">
-                          {SPORT_EMOJI[s.sport]} {s.centerShortName}
+                        <div className="text-[11px] font-medium leading-tight truncate">
+                          <span aria-hidden="true" className="opacity-80 mr-0.5">
+                            {SPORT_EMOJI[s.sport]}
+                          </span>
+                          {s.centerShortName}
                         </div>
                         {s.height > 32 && (
-                          <div className="text-[10px] opacity-90 leading-tight truncate">
+                          <div className="text-[10px] opacity-85 leading-tight truncate">
                             {formatTimeRange(s.startTime, s.endTime)}
                           </div>
                         )}
                         {s.height > 56 && (
-                          <div className="text-[10px] opacity-80 leading-tight truncate">
+                          <div className="text-[10px] opacity-75 leading-tight truncate">
                             {s.cost === 0 ? "Free" : `$${s.cost}`}
                           </div>
                         )}

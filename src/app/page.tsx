@@ -110,16 +110,6 @@ export default function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 pt-4 pb-6">
-      {/* Quiet header */}
-      <div className="mb-4">
-        <h1 className="text-lg sm:text-xl font-semibold text-text-primary leading-tight">
-          Find play in Toronto
-        </h1>
-        <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
-          Community-centre drop-ins — when and where, at a glance.
-        </p>
-      </div>
-
       {/* Sport picker — subdued underline tabs instead of pill group */}
       {sports.length > 1 && (
         <div className="mb-3 -mx-3 px-3 sm:mx-0 sm:px-0 overflow-x-auto no-scrollbar">
@@ -375,10 +365,7 @@ function FilterTile({
 function EmptyState({ onReset }: { onReset: () => void }) {
   return (
     <div className="bg-white border border-border rounded-2xl p-10 text-center">
-      <p className="text-sm text-text-primary mb-1">No sessions match</p>
-      <p className="text-xs text-text-secondary mb-4">
-        Try widening your filters.
-      </p>
+      <p className="text-sm text-text-secondary mb-4">No sessions match</p>
       <button
         onClick={onReset}
         className="h-9 px-4 rounded-lg bg-text-primary text-white text-sm"

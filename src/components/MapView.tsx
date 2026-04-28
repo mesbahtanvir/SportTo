@@ -75,7 +75,7 @@ export default function MapView({
   if (!leaflet) {
     return (
       <div
-        className={`bg-gray-50 rounded-xl ${wrapperClass}`}
+        className={`bg-primary-light/60 rounded-xl ${wrapperClass}`}
         style={wrapperStyle}
         aria-hidden="true"
       />
@@ -173,19 +173,21 @@ export default function MapView({
               }}
             >
               <Popup>
-                <div className="text-sm">
-                  <strong>{c.shortName}</strong>
+                <div className="text-sm leading-relaxed">
+                  <strong className="text-text-primary font-medium">
+                    {c.shortName}
+                  </strong>
                   <br />
                   <span className="text-text-secondary">{c.address}</span>
                   <br />
                   <span className="text-text-secondary">
                     {c.schedules.length} session
-                    {c.schedules.length !== 1 ? "s" : ""}/week
+                    {c.schedules.length !== 1 ? "s" : ""} / week
                   </span>
                   <br />
                   <a
                     href={`/centers/${c.slug}`}
-                    className="text-primary underline"
+                    className="text-text-primary underline decoration-text-secondary/40 underline-offset-2 hover:decoration-text-primary/60"
                   >
                     View centre
                   </a>

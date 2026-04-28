@@ -45,6 +45,25 @@ body {
   overscroll-behavior-y: contain;
   font-feature-settings: "ss01", "cv11";
   line-height: 1.55;
+  text-rendering: optimizeLegibility;
+}
+
+/* Calm-tech: quiet selection — no high-saturation default browser blue. */
+::selection {
+  background: var(--color-primary-light);
+  color: var(--color-text-primary);
+}
+
+/* Calm-tech: a single focus-visible style across the app. Soft ring in the
+   primary tone instead of the platform default (which is loud and varies
+   between browsers). Hidden when the user is clicking with a mouse. */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-primary) 70%, transparent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Calm-tech: honour reduced motion. Everything animated should become
@@ -75,7 +94,7 @@ button, a {
 .leaflet-container {
   font-family: inherit !important;
   border-radius: 0.75rem;
-  background: #F3F4F6;
+  background: var(--color-primary-light);
 }
 
 .leaflet-popup-content-wrapper {
@@ -91,7 +110,8 @@ button, a {
 .leaflet-control-attribution {
   font-size: 10px !important;
   background: rgba(255, 255, 255, 0.6) !important;
-  color: #94A3B8 !important;
+  color: var(--color-text-secondary) !important;
+  opacity: 0.7;
 }
 
 .leaflet-bar {
@@ -100,12 +120,12 @@ button, a {
 }
 .leaflet-bar a {
   background: rgba(255, 255, 255, 0.9) !important;
-  color: #64748B !important;
+  color: var(--color-text-secondary) !important;
   border-bottom-color: var(--color-border) !important;
 }
 .leaflet-bar a:hover {
-  background: #F8FAFC !important;
-  color: #1A202C !important;
+  background: var(--color-primary-light) !important;
+  color: var(--color-text-primary) !important;
 }
 
 /* Ambient map mode — desaturates tiles so the map sits in the periphery.

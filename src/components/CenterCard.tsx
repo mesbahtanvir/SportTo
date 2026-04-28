@@ -15,12 +15,19 @@ export default function CenterCard({ center }: { center: CommunityCenter }) {
       className="block bg-white rounded-xl border border-border hover:border-text-secondary/40 transition-colors overflow-hidden"
     >
       <div className="p-5">
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-medium text-text-primary leading-tight">
+        <div className="flex items-start justify-between gap-3 mb-2">
+          <h3 className="font-medium text-text-primary leading-tight tracking-tight">
             {center.shortName}
           </h3>
           {hasFree && (
-            <span className="shrink-0 text-[11px] text-text-secondary">
+            <span
+              className="shrink-0 inline-flex items-center gap-1 text-[11px] text-text-secondary mt-0.5"
+              title="Some sessions are free"
+            >
+              <span
+                aria-hidden="true"
+                className="w-1 h-1 rounded-full bg-success/70"
+              />
               Free
             </span>
           )}
@@ -62,11 +69,9 @@ export default function CenterCard({ center }: { center: CommunityCenter }) {
           {center.racketsAvailable && (
             <>
               <span className="opacity-40">·</span>
-              <span>Rackets available</span>
+              <span>Rackets on-site</span>
             </>
           )}
-          <span className="opacity-40">·</span>
-          <span className="capitalize">{center.operator}</span>
         </div>
       </div>
     </Link>
