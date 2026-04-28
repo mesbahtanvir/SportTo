@@ -90,7 +90,7 @@ export default function SchedulePage() {
               )}
             </h2>
             {sessions.length === 0 ? (
-              <p className="text-sm text-gray-400 italic pl-4">
+              <p className="text-sm text-text-secondary/70 pl-4">
                 No sessions scheduled
               </p>
             ) : (

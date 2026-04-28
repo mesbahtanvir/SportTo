@@ -97,9 +97,9 @@ export default async function CenterDetailPage({
             href={`https://www.google.com/maps/dir/?api=1&destination=${center.coordinates.lat},${center.coordinates.lng}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 mt-5 h-9 px-4 bg-text-primary text-white rounded-lg text-sm font-medium hover:bg-text-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 mt-5 h-9 px-4 bg-white border border-border rounded-lg text-sm text-text-primary hover:border-text-primary/40 hover:bg-primary-light/40 transition-colors"
           >
-            <MapPin size={14} strokeWidth={1.75} />
+            <MapPin size={14} strokeWidth={1.75} className="text-text-secondary" />
             Get directions
           </a>
         </div>
