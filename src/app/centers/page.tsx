@@ -132,16 +132,13 @@ export default function CentersPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 pt-4 sm:pt-8 pb-6">
-      <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
-        <div className="min-w-0">
-          <h1 className="text-lg sm:text-xl font-semibold leading-tight">
-            Community centres
-          </h1>
-          <p className="text-xs sm:text-sm text-text-secondary mt-0.5 sm:mt-1">
-            {filtered.length} location{filtered.length !== 1 ? "s" : ""} with
-            badminton
-          </p>
-        </div>
+      <div className="flex items-end justify-between gap-3 mb-4 sm:mb-6">
+        <h1 className="text-lg sm:text-xl font-semibold leading-tight">
+          Community centres
+          <span className="ml-2 text-xs sm:text-sm font-normal text-text-secondary">
+            {filtered.length}
+          </span>
+        </h1>
         <button
           onClick={() => setShowFilters(!showFilters)}
           className="md:hidden shrink-0 flex items-center gap-1.5 h-8 px-3 bg-white border border-border rounded-full text-sm text-text-secondary hover:text-text-primary"
@@ -193,10 +190,9 @@ export default function CentersPage() {
             ))}
           </div>
           {filtered.length === 0 && (
-            <div className="text-center py-16 text-text-secondary">
-              <p className="text-lg font-medium mb-1">No centres match</p>
-              <p className="text-sm">Try adjusting your filters.</p>
-            </div>
+            <p className="text-center py-16 text-sm text-text-secondary">
+              No centres match
+            </p>
           )}
           <MapView
             centers={filtered}

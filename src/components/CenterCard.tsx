@@ -69,11 +69,9 @@ export default function CenterCard({ center }: { center: CommunityCenter }) {
           {center.racketsAvailable && (
             <>
               <span className="opacity-40">·</span>
-              <span>Rackets available</span>
+              <span>Rackets on-site</span>
             </>
           )}
-          <span className="opacity-40">·</span>
-          <span className="capitalize">{center.operator}</span>
         </div>
       </div>
     </Link>

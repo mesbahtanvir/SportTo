@@ -183,69 +183,33 @@ export default async function CenterDetailPage({
         </div>
       </section>
 
-      {/* Info */}
-      <section className="mb-12">
-        <h2 className="text-[11px] font-medium uppercase tracking-wider text-text-secondary mb-3">
-          Centre info
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="bg-white rounded-xl border border-border p-5">
-            <h3 className="text-sm font-medium mb-2 text-text-primary">
-              What to bring
-            </h3>
-            <ul className="text-sm text-text-secondary space-y-1.5 leading-relaxed">
-              <li>
-                {center.racketsAvailable
-                  ? "Rackets available on-site"
-                  : "Bring your own racket"}
-              </li>
-              <li>
-                {center.shuttlesProvided
-                  ? "Shuttlecocks provided"
-                  : "Bring your own shuttlecocks"}
-              </li>
-              <li>Non-marking indoor shoes</li>
-              <li>Water bottle</li>
-            </ul>
-          </div>
-          <div className="bg-white rounded-xl border border-border p-5">
-            <h3 className="text-sm font-medium mb-2 text-text-primary">
-              Facility
-            </h3>
-            <ul className="text-sm text-text-secondary space-y-1.5 leading-relaxed">
-              <li>
-                {center.numberOfCourts} court
-                {center.numberOfCourts > 1 ? "s" : ""}
-              </li>
-              <li className="capitalize">Operated by {center.operator}</li>
-              <li className="flex items-center gap-1.5">
-                {center.schedules.some((s) => s.reservationRequired) ? (
-                  <>
-                    <AlertCircle size={13} strokeWidth={1.75} className="text-text-secondary" />
-                    Some sessions need a reservation
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle size={13} strokeWidth={1.75} className="text-text-secondary" />
-                    Walk-in welcome
-                  </>
-                )}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Verified */}
-      <div className="text-xs text-text-secondary/80 mb-10">
-        Last verified {center.lastVerified} · Confirm with the centre before
-        you go.
-      </div>
+      {/* Compact facts strip — only centre-specific signals worth their pixels */}
+      <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-text-secondary mb-12">
+        <li>
+          {center.numberOfCourts} court
+          {center.numberOfCourts > 1 ? "s" : ""}
+        </li>
+        <li className="flex items-center gap-1.5">
+          {center.schedules.some((s) => s.reservationRequired) ? (
+            <>
+              <AlertCircle size={13} strokeWidth={1.75} />
+              Reservation needed
+            </>
+          ) : (
+            <>
+              <CheckCircle size={13} strokeWidth={1.75} />
+              Walk-in
+            </>
+          )}
+        </li>
+        {!center.racketsAvailable && <li>Bring a racket</li>}
+        {!center.shuttlesProvided && <li>Bring shuttles</li>}
+      </ul>
 
       {/* Nearby centres */}
       <section>
         <h2 className="text-[11px] font-medium uppercase tracking-wider text-text-secondary mb-3">
-          Other centres
+          Nearby
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {nearbyCenters.map((c) => (
@@ -256,10 +220,6 @@ export default async function CenterDetailPage({
             >
               <h3 className="text-sm font-medium text-text-primary mb-1">{c.shortName}</h3>
               <p className="text-xs text-text-secondary">{c.address}</p>
-              <p className="text-xs text-text-secondary/80 mt-1.5">
-                {c.schedules.length} session
-                {c.schedules.length !== 1 ? "s" : ""} / week
-              </p>
             </Link>
           ))}
         </div>
